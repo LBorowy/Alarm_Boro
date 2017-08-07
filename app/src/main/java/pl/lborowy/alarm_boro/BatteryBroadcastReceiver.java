@@ -15,7 +15,7 @@ public class BatteryBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "Charger pluged in", Toast.LENGTH_SHORT).show();
         Intent startActivityIntent = new Intent(context, MainActivity.class);
-        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // nowy task aplikacji
+        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // nowy task aplikacji (ubija poprzednie)
         context.startActivity(startActivityIntent);
     }
 }
