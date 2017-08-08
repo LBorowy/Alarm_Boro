@@ -34,17 +34,21 @@ public class AlarmActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         animation = setupAnimation();
+        ringtone = setupRingtone();
 
+
+        startAlarm(mainView);
+
+    }
+
+    private Ringtone setupRingtone() {
         // zbieranie scieżki do pliku, które są w paczce
         Uri path = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.alarm);
         // ringtonemanager domyslny alarm
         RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM, path);
         ringtone = RingtoneManager.getRingtone(this, path);
         ringtone.setStreamType(STREAM_ALARM);
-        ringtone.play();
-
-        startAlarm(mainView);
-
+        return ringtone;
     }
 
     private void startAlarm(View mainView) {
