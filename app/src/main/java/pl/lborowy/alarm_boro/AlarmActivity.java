@@ -8,6 +8,9 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 
 public class AlarmActivity extends AppCompatActivity {
@@ -20,6 +23,9 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
 
         final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        View mainView = findViewById(R.id.activity_alarm_view);
+
         if (Build.VERSION.SDK_INT >= 26) {
             vibrator.vibrate(VibrationEffect.createOneShot(2000, 1000));
         } else {
@@ -32,6 +38,23 @@ public class AlarmActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 vibrator.cancel();
+            }
+        });
+
+        final Animation animation = new AlphaAnimation(1, 0);
+        animation.setInterpolator(new LinearInterpolator()); // zawsze musi być
+        animation.setRepeatCount(Animation.INFINITE); // powtarzalnośc /do końca/
+        animation.setRepeatMode(Animation.REVERSE); // ciemno-jasno-jasno-ciemno
+        animation.setDuration(500);
+        mainView.startAnimation(animation);
+
+        View stopAlarmButton = findViewById(R.id.alarm_activity_stop);
+        stopAlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vibrator.cancel();
+                animation.cancel();
+                finish();
             }
         });
     }
