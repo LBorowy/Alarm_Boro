@@ -15,6 +15,7 @@
         android:src="@drawable/ic_alarm_on_black_24dp" />
 
     <Button
+        android:onClick="stopAlarm"
         android:id="@+id/alarm_activity_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

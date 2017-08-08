@@ -16,7 +16,6 @@ import android.widget.Button;
 
 public class AlarmActivity extends AppCompatActivity {
 
-    private Button button;
     private Vibrator vibrator;
     private Animation animation;
 
@@ -26,31 +25,20 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
 
         View mainView = findViewById(R.id.activity_alarm_view);
-        View stopAlarmButton = findViewById(R.id.alarm_activity_stop);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         animation = setupAnimation();
 
-        startVibration(vibrator);
-        mainView.startAnimation(animation);
+        startAlarm(mainView);
 
-
-        stopAlarmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vibrator.cancel();
-            }
-        });
-
-        stopAlarmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopAlarm();
-            }
-        });
     }
 
-    private void stopAlarm() {
+    private void startAlarm(View mainView) {
+        startVibration(vibrator);
+        mainView.startAnimation(animation);
+    }
+
+    public void stopAlarm(View view) { // View view, żeby było widoczne dla xml'a
         vibrator.cancel();
         animation.cancel();
         finish();
