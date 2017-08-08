@@ -1,6 +1,9 @@
 package pl.lborowy.alarm_boro;
 
 import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -14,10 +17,13 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 
+import static android.media.AudioManager.STREAM_ALARM;
+
 public class AlarmActivity extends AppCompatActivity {
 
     private Vibrator vibrator;
     private Animation animation;
+    private Ringtone ringtone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,14 @@ public class AlarmActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         animation = setupAnimation();
 
+        // zbieranie scieżki do pliku, które są w paczce
+        Uri path = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.alarm);
+        // ringtonemanager domyslny alarm
+        RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM, path);
+        ringtone = RingtoneManager.getRingtone(this, path);
+        ringtone.setStreamType(STREAM_ALARM);
+        ringtone.play();
+
         startAlarm(mainView);
 
     }
@@ -36,11 +50,13 @@ public class AlarmActivity extends AppCompatActivity {
     private void startAlarm(View mainView) {
         startVibration(vibrator);
         mainView.startAnimation(animation);
+        ringtone.play();
     }
 
     public void stopAlarm(View view) { // View view, żeby było widoczne dla xml'a
         vibrator.cancel();
         animation.cancel();
+        ringtone.stop();
         finish();
     }
 
